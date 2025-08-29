@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas de Software - ADSO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .info-cards {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .info-card strong {
+            color: #FFD700;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.2s forwards;
+        }
+
+        .project-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin: 40px 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s forwards;
+        }
+
+        .project-info h3 {
+            color: #FFD700;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Content Sections */
+        .section {
+            background: white;
+            margin: 40px 0;
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5rem;
+            margin: 30px 0 15px;
+        }
+
+        .section p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Testing Types Grid */
+        .testing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .test-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .test-card:nth-child(2) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .test-card:nth-child(3) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .test-card:nth-child(4) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .test-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .test-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .test-card li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .test-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Tools Section */
+        .tools-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .tools-section h2 {
+            color: white;
+        }
+
+        .tools-section h2::after {
+            background: white;
+        }
+
+        .junit-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .junit-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .feature-item h4 {
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .floating-element.circle {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            top: 20%;
+            right: 10%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element.square {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            border-radius: 20px;
+            bottom: 20%;
+            left: 5%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .title {
+                font-size: 1.4rem;
+                min-width: auto;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section {
+                padding: 30px 20px;
+                margin: 20px 0;
+            }
+
+            .tech-stack {
+                gap: 10px;
+            }
+
+            .tech-item {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="floating-element circle"></div>
+    <div class="floating-element square"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="title">GA9-220501096-AA1-EV01 - Taller sobre Codificación de Módulos del Software</h1>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <strong>Programa:</strong> ADSO
+                    </div>
+                    <div class="info-card">
+                        <strong>Ficha:</strong> 2885494
+                    </div>
+                    <div class="info-card">
+                        <strong>Instructor:</strong> Julian Loaiza
+                    </div>
+                    <div class="info-card">
+                        <strong>Alumno:</strong> José Zúñiga
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Pruebas de Software</h1>
+            <p>Asegurando la calidad en el desarrollo de sistemas</p>
+            
+            <div class="project-info">
+                <h3>Proyecto: Sistema de Inventarios</h3>
+                <p>Desarrollo de un sistema integral para gestión de inventarios utilizando tecnologías modernas y metodologías de testing avanzadas.</p>
+                <div class="tech-stack">
+                    <div class="tech-item">Java</div>
+                    <div class="tech-item">Spring Framework</div>
+                    <div class="tech-item">JUnit</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tipos de Pruebas -->
+    <section class="section" id="tipos-pruebas">
+        <div class="container">
+            <h2>Tipos de Pruebas de Software</h2>
+            
+            <div class="testing-grid">
+                <div class="test-card">
+                    <h4>Pruebas Unitarias</h4>
+                    <ul>
+                        <li>Prueban componentes individuales</li>
+                        <li>Rápidas y automatizadas</li>
+                        <li>Detectan errores temprano</li>
+                        <li>Facilitan el refactoring</li>
+                    </ul>
+                </div>
+                
+                <div class="test-card">
+                    <h4>Pruebas de Integración</h4>
+                    <ul>
+                        <li>Verifican interacción entre módulos</li>
+                        <li>Detectan problemas de interfaz</li>
+                        <li>Validan flujo de datos</li>
+                        <li>Aseguran comunicación correcta</li>
+                    </ul>
+                </div>
+                
+                <div class="test-card">
+                    <h4>Pruebas de Sistema</h4>
+                    <ul>
+                        <li>Evalúan el sistema completo</li>
+                        <li>Verifican requisitos funcionales</li>
+                        <li>Prueban en ambiente similar a producción</li>
+                        <li>Validan el comportamiento end-to-end</li>
+                    </ul>
+                </div>
+                
+                <div class="test-card">
+                    <h4>Pruebas de Aceptación</h4>
+                    <ul>
+                        <li>Validación desde perspectiva del usuario</li>
+                        <li>Verifican cumplimiento de requisitos</li>
+                        <li>Confirman la funcionalidad esperada</li>
+                        <li>Criterio final para aceptación</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Beneficios Generales</h3>
+            <p>Las pruebas de software proporcionan múltiples beneficios: <strong>detección temprana de errores</strong>, reduciendo costos de corrección; <strong>mejora de la calidad</strong> del producto final; <strong>confiabilidad aumentada</strong> en el sistema; y <strong>facilitan el mantenimiento</strong> y evolución del software. Además, proporcionan documentación viva del comportamiento esperado del sistema.</p>
+        </div>
+    </section>
+
+    <!-- Adaptación al Proyecto -->
+    <section class="section" id="proyecto-adaptacion">
+        <div class="container">
+            <h2>Adaptación al Proyecto de Inventarios</h2>
+            
+            <h3>Pruebas Más Adecuadas para nuestro Sistema</h3>
+            
+            <p><strong>1. Pruebas Unitarias:</strong> Esenciales para validar la lógica de negocio de cada componente del sistema de inventarios. Probamos métodos individuales como cálculo de stock, validación de productos, y operaciones CRUD básicas.</p>
+            
+            <p><strong>2. Pruebas de Integración:</strong> Críticas para verificar la comunicación entre capas (Controller-Service-Repository) y la integración con la base de datos. Validamos que las transacciones de inventario se procesen correctamente entre diferentes módulos.</p>
+            
+            <p><strong>3. Pruebas de Sistema:</strong> Necesarias para validar flujos completos como:</p>
+            <ul style="margin-left: 40px; color: #555;">
+                <li>Registro de entrada de productos</li>
+                <li>Procesamiento de salidas de inventario</li>
+                <li>Generación de reportes de stock</li>
+                <li>Alertas de stock mínimo</li>
+            </ul>
+            
+            <h3>Justificación de la Selección</h3>
+            <p>Para un sistema de inventarios, la <strong>integridad de los datos</strong> y la <strong>precisión de los cálculos</strong> son fundamentales. Las pruebas unitarias aseguran que cada cálculo sea correcto, las de integración verifican que los datos fluyan correctamente entre componentes, y las de sistema validan que los procesos de negocio completos funcionen según lo esperado.</p>
+        </div>
+    </section>
+
+    <!-- Herramientas -->
+    <section class="section tools-section" id="herramientas">
+        <div class="container">
+            <h2>Herramienta de Pruebas: JUnit</h2>
+            
+            <div class="junit-info">
+                <h3>¿Por qué JUnit?</h3>
+                <p>JUnit es el framework de testing más popular para Java, especialmente adecuado para nuestro proyecto de inventarios desarrollado con Spring. Su integración nativa con el ecosistema Spring y su amplia adopción en la industria lo convierten en la elección ideal.</p>
+                
+                <div class="junit-features">
+                    <div class="feature-item">
+                        <h4>Anotaciones Simples</h4>
+                        <p>@Test, @BeforeEach, @AfterEach facilitan la escritura de pruebas</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4>Assertions Potentes</h4>
+                        <p>Múltiples métodos para verificar resultados esperados</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4>Integración con Spring</h4>
+                        <p>@SpringBootTest permite pruebas de integración completas</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <h4>Cobertura de Código</h4>
+                        <p>Métricas detalladas sobre qué código está siendo probado</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Implementación en nuestro Proyecto</h3>
+            <p>En el sistema de inventarios, utilizamos JUnit para:</p>
+            <ul style="color: white; margin-left: 20px;">
+                <li><strong>Pruebas de Repositorio:</strong> Validar operaciones de base de datos</li>
+                <li><strong>Pruebas de Servicio:</strong> Verificar lógica de negocio</li>
+                <li><strong>Pruebas de Controller:</strong> Comprobar endpoints REST</li>
+                <li><strong>Pruebas de Integración:</strong> Validar flujos completos del sistema</li>
+            </ul>
+        </div>
+    </section>
+
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = scrollPercent + '%';
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scrolling for any potential navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effect to test cards
+        document.querySelectorAll('.test-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            document.querySelector('.floating-element.circle').style.transform = `translateY(${rate}px)`;
+            document.querySelector('.floating-element.square').style.transform = `translateY(${rate * 0.8}px)`;
+        });
+    </script>
+</body>
+</html>
